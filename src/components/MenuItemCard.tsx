@@ -149,8 +149,16 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
       {/* Item Selection Modal */}
       {showCustomization && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setShowCustomization(false)}>
-          <div className="rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl" style={{ background: '#0066CC' }} onClick={(e) => e.stopPropagation()}>
-            <div className="sticky top-0 p-6 flex items-center justify-between rounded-t-2xl" style={{ background: '#3399FF' }}>
+          <div className="flex flex-col rounded-2xl max-w-2xl w-full max-h-[90vh] shadow-2xl overflow-hidden" style={{ background: '#0066CC' }} onClick={(e) => e.stopPropagation()}>
+            <div 
+              className="flex-shrink-0 p-6 flex items-center justify-between rounded-t-2xl" 
+              style={{ 
+                background: '#3399FF', 
+                zIndex: 20,
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                borderBottom: '2px solid rgba(255, 255, 255, 0.2)'
+              }}
+            >
               <div>
                 <h3 className="text-xl font-bold text-white">{item.name}</h3>
                 <p className="text-sm text-white/80 mt-1">Select an item to add to cart</p>
@@ -163,10 +171,28 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
               </button>
             </div>
 
-            <div className="p-6" style={{ background: '#0066CC' }}>
-              {/* Show currency packages as selectable items in grid */}
-              {item.variations && item.variations.length > 0 ? (
-                <div className="grid grid-cols-2 gap-3">
+            <div 
+              className="flex-1 overflow-y-auto min-h-0 relative" 
+              style={{ 
+                background: '#0066CC',
+                WebkitOverflowScrolling: 'touch',
+                overscrollBehavior: 'contain'
+              }}
+            >
+              {/* Fade-out gradient overlay at top - items fade as they approach header */}
+              <div
+                className="sticky top-0 left-0 right-0 z-10 pointer-events-none"
+                style={{
+                  height: '56px',
+                  background: 'linear-gradient(to bottom, #0066CC 0%, rgba(0, 102, 204, 0.99) 10%, rgba(0, 102, 204, 0.95) 25%, rgba(0, 102, 204, 0.85) 45%, rgba(0, 102, 204, 0.5) 70%, rgba(0, 102, 204, 0.1) 90%, transparent 100%)',
+                  marginBottom: '-56px'
+                }}
+              />
+              
+              <div className="p-6" style={{ paddingTop: 'calc(1.5rem + 56px)' }}>
+                {/* Show currency packages as selectable items in grid */}
+                {item.variations && item.variations.length > 0 ? (
+                  <div className="grid grid-cols-2 gap-3">
                   {item.variations.map((variation) => {
                     const originalPrice = variation.price;
                     const discountedPrice = getDiscountedPrice(originalPrice);
@@ -215,6 +241,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
                   No currency packages available
                 </div>
               )}
+              </div>
             </div>
           </div>
         </div>
