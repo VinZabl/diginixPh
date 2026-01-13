@@ -194,10 +194,19 @@ const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({ onBack }) =
   };
 
   const handleSaveMethod = async () => {
-    if (!formData.id || !formData.name || !formData.account_number || !formData.account_name || !formData.qr_code_url || !formData.admin_name) {
+    // Trim and validate admin_name
+    const trimmedAdminName = formData.admin_name?.trim() || '';
+    
+    if (!formData.id || !formData.name || !formData.account_number || !formData.account_name || !trimmedAdminName) {
       alert('Please fill in all required fields including Admin Name');
       return;
     }
+    
+    // Update formData with trimmed admin_name
+    const dataToSave = {
+      ...formData,
+      admin_name: trimmedAdminName
+    };
 
     // Validate ID format (kebab-case)
     const idRegex = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -209,19 +218,19 @@ const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({ onBack }) =
     // Check for duplicate ID within the same admin group when adding (not editing)
     if (currentView === 'add') {
       const duplicateInGroup = allPaymentMethods.some(
-        m => m.id === formData.id && m.admin_name === formData.admin_name
+        m => m.id === dataToSave.id && m.admin_name === dataToSave.admin_name
       );
       if (duplicateInGroup) {
-        alert(`A payment method with ID "${formData.id}" already exists in the "${formData.admin_name}" group. Please use a different ID.`);
+        alert(`A payment method with ID "${dataToSave.id}" already exists in the "${dataToSave.admin_name}" group. Please use a different ID.`);
         return;
       }
     }
 
     try {
       if (editingMethod) {
-        await updatePaymentMethod(editingMethod.uuid_id, formData);
+        await updatePaymentMethod(editingMethod.uuid_id, dataToSave);
       } else {
-        await addPaymentMethod(formData);
+        await addPaymentMethod(dataToSave);
       }
       await fetchAllPaymentMethods();
       setCurrentView('list');
@@ -352,8 +361,11 @@ const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({ onBack }) =
               </div>
 
               <div>
+                <label className="block text-sm font-medium text-black mb-2">
+                  QR Code Image <span className="text-gray-400 font-normal">(Optional)</span>
+                </label>
                 <ImageUpload
-                  currentImage={formData.qr_code_url}
+                  currentImage={formData.qr_code_url || undefined}
                   onImageChange={(imageUrl) => setFormData({ ...formData, qr_code_url: imageUrl || '' })}
                 />
               </div>
@@ -571,14 +583,20 @@ const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({ onBack }) =
                             >
                               <div className="flex items-center space-x-4">
                                 <div className="flex-shrink-0">
-                                  <img
-                                    src={method.qr_code_url}
-                                    alt={`${method.name} QR Code`}
-                                    className="w-12 h-12 rounded-lg border border-gray-300 object-cover"
-                                    onError={(e) => {
-                                      e.currentTarget.src = 'https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop';
-                                    }}
-                                  />
+                                  {method.qr_code_url ? (
+                                    <img
+                                      src={method.qr_code_url}
+                                      alt={`${method.name} QR Code`}
+                                      className="w-12 h-12 rounded-lg border border-gray-300 object-cover"
+                                      onError={(e) => {
+                                        e.currentTarget.src = 'https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop';
+                                      }}
+                                    />
+                                  ) : (
+                                    <div className="w-12 h-12 rounded-lg border border-gray-300 bg-gray-100 flex items-center justify-center">
+                                      <CreditCard className="h-6 w-6 text-gray-400" />
+                                    </div>
+                                  )}
                                 </div>
                                 <div>
                                   <h3 className="font-medium text-black text-sm">{method.name}</h3>
@@ -636,14 +654,20 @@ const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({ onBack }) =
                   >
                     <div className="flex items-center space-x-4">
                       <div className="flex-shrink-0">
-                        <img
-                          src={method.qr_code_url}
-                          alt={`${method.name} QR Code`}
-                          className="w-12 h-12 rounded-lg border border-gray-300 object-cover"
-                          onError={(e) => {
-                            e.currentTarget.src = 'https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop';
-                          }}
-                        />
+                        {method.qr_code_url ? (
+                          <img
+                            src={method.qr_code_url}
+                            alt={`${method.name} QR Code`}
+                            className="w-12 h-12 rounded-lg border border-gray-300 object-cover"
+                            onError={(e) => {
+                              e.currentTarget.src = 'https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop';
+                            }}
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-lg border border-gray-300 bg-gray-100 flex items-center justify-center">
+                            <CreditCard className="h-6 w-6 text-gray-400" />
+                          </div>
+                        )}
                       </div>
                       <div>
                         <h3 className="font-medium text-black text-sm">{method.name}</h3>

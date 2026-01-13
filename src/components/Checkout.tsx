@@ -338,11 +338,12 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
            /FB_IAB/i.test(navigator.userAgent);
   }, []);
 
-  const handleDownloadQRCode = async (qrCodeUrl: string, paymentMethodName: string) => {
+  const handleDownloadQRCode = async (qrCodeUrl: string | null | undefined, paymentMethodName: string) => {
     // Only disable in Messenger's in-app browser
     // All external browsers (Chrome, Safari, Firefox, Edge, etc.) should work
-    if (isMessengerBrowser) {
+    if (isMessengerBrowser || !qrCodeUrl) {
       // In Messenger, downloads don't work - users can long-press the QR code image
+      // Also return early if no QR code URL is provided
       return;
     }
     
@@ -699,29 +700,37 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
                 </div>
                 
                 {/* Download QR Button and QR Image */}
-                <div className="flex flex-col items-center gap-3">
-                  {!isMessengerBrowser && (
-                    <button
-                      onClick={() => handleDownloadQRCode(selectedPaymentMethod.qr_code_url, selectedPaymentMethod.name)}
-                      className="px-3 py-1.5 glass-strong rounded-lg hover:bg-cafe-primary/20 transition-colors duration-200 text-sm font-medium text-cafe-text flex items-center gap-2"
-                      title="Download QR code"
-                    >
-                      <Download className="h-4 w-4" />
-                      <span>Download QR</span>
-                    </button>
-                  )}
-                  {isMessengerBrowser && (
-                    <p className="text-xs text-cafe-textMuted text-center">Long-press the QR code to save</p>
-                  )}
-                  <img 
-                    src={selectedPaymentMethod.qr_code_url} 
-                    alt={`${selectedPaymentMethod.name} QR Code`}
-                    className="w-32 h-32 rounded-lg border-2 border-cafe-primary/30 shadow-sm"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop';
-                    }}
-                  />
-                </div>
+                {selectedPaymentMethod.qr_code_url ? (
+                  <div className="flex flex-col items-center gap-3">
+                    {!isMessengerBrowser && (
+                      <button
+                        onClick={() => handleDownloadQRCode(selectedPaymentMethod.qr_code_url, selectedPaymentMethod.name)}
+                        className="px-3 py-1.5 glass-strong rounded-lg hover:bg-cafe-primary/20 transition-colors duration-200 text-sm font-medium text-cafe-text flex items-center gap-2"
+                        title="Download QR code"
+                      >
+                        <Download className="h-4 w-4" />
+                        <span>Download QR</span>
+                      </button>
+                    )}
+                    {isMessengerBrowser && (
+                      <p className="text-xs text-cafe-textMuted text-center">Long-press the QR code to save</p>
+                    )}
+                    <img 
+                      src={selectedPaymentMethod.qr_code_url} 
+                      alt={`${selectedPaymentMethod.name} QR Code`}
+                      className="w-32 h-32 rounded-lg border-2 border-cafe-primary/30 shadow-sm"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop';
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="w-32 h-32 rounded-lg border-2 border-cafe-primary/30 shadow-sm bg-cafe-darkCard flex items-center justify-center">
+                      <p className="text-xs text-cafe-textMuted text-center">No QR Code Available</p>
+                    </div>
+                  </div>
+                )}
                 
                 {/* Account Number with Copy Button */}
                 <div>
