@@ -14,7 +14,7 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
   return (
     <header className="sticky top-0 z-50 shadow-sm" style={{ 
       border: 'none',
-      background: 'rgba(255, 255, 255, 0.1)',
+      background: '#4B1F42',
       backdropFilter: 'blur(20px)',
       WebkitBackdropFilter: 'blur(20px)'
     }}>
@@ -22,25 +22,25 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
         <div className="flex items-center justify-between min-h-12 md:min-h-16">
           <button 
             onClick={onMenuClick}
-            className="text-cafe-text hover:text-cafe-primary transition-colors duration-200 flex items-center gap-3"
+            className="text-white hover:opacity-80 transition-colors duration-200 flex items-center gap-3"
           >
             <img 
               src="/logo.png" 
-              alt="Hatred Logo"
-              className="h-10 w-10 sm:h-12 sm:w-12 md:h-16 md:w-16 rounded-full object-cover"
+              alt="Kitty Galore Logo"
+              className="h-10 sm:h-12 md:h-16 w-auto object-contain"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
               }}
             />
-            <span className="text-xl sm:text-2xl md:text-3xl font-bold text-cafe-text">
-              Hatred Top Up
+            <span className="text-base sm:text-lg md:text-xl font-bold text-white whitespace-nowrap">
+              Kitty Galore Game Credits
             </span>
           </button>
 
           <div className="flex items-center space-x-2">
             <button 
               onClick={onCartClick}
-              className="relative p-2 text-cafe-text hover:text-cafe-primary hover:bg-cafe-primary/20 rounded-full transition-all duration-200"
+              className="relative p-2 text-white hover:opacity-80 hover:bg-white/10 rounded-full transition-all duration-200"
             >
               <ShoppingCart className="h-6 w-6" />
               {cartItemsCount > 0 && (

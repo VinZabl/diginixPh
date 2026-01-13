@@ -5,21 +5,21 @@ export default {
     extend: {
       colors: {
         cafe: {
-          accent: '#8B0000', // Dark red accent
+          accent: '#E74694', // Pink accent
           dark: '#0A0A0A', // Off-black background
           cream: '#F5F5F5',
           beige: '#E5E5E5',
           latte: '#D5D5D5',
-          espresso: '#8B0000',
+          espresso: '#E74694',
           light: '#1A1A1A',
-          // Hatred theme colors
-          primary: '#8B0000', // Dark red primary
-          secondary: '#A00000', // Slightly lighter red
-          darkBg: '#0A0A0A', // Off-black main background
-          darkCard: '#141414', // Slightly lighter card background
-          glass: 'rgba(255, 255, 255, 0.1)', // Glass effect
-          text: '#F5F5F5', // Light text
-          textMuted: '#A0A0A0' // Muted text
+          // Kitty Galore theme colors
+          primary: '#E74694', // Pink primary
+          secondary: '#F05BA8', // Slightly lighter pink
+          darkBg: '#FFF5F5', // Off-light pink main background
+          darkCard: '#FFF9F9', // Slightly darker card background
+          glass: 'rgba(231, 70, 148, 0.1)', // Glass effect with accent color
+          text: '#2D1B2E', // Dark text for light background
+          textMuted: '#5A4A5B' // Muted text
         }
       },
       fontFamily: {

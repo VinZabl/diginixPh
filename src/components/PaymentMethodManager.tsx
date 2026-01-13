@@ -194,8 +194,25 @@ const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({ onBack }) =
   };
 
   const handleSaveMethod = async () => {
-    if (!formData.id || !formData.name || !formData.account_number || !formData.account_name || !formData.qr_code_url || !formData.admin_name) {
-      alert('Please fill in all required fields including Admin Name');
+    // Validate all required fields with more specific checks
+    if (!formData.id?.trim()) {
+      alert('Please fill in the Payment Method ID');
+      return;
+    }
+    if (!formData.name?.trim()) {
+      alert('Please fill in the Payment Method Name');
+      return;
+    }
+    if (!formData.account_number?.trim()) {
+      alert('Please fill in the Account Number/Phone');
+      return;
+    }
+    if (!formData.account_name?.trim()) {
+      alert('Please fill in the Account Name');
+      return;
+    }
+    if (!formData.admin_name?.trim()) {
+      alert('Please select an Admin Name');
       return;
     }
 
@@ -571,14 +588,17 @@ const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({ onBack }) =
                             >
                               <div className="flex items-center space-x-4">
                                 <div className="flex-shrink-0">
-                                  <img
-                                    src={method.qr_code_url}
-                                    alt={`${method.name} QR Code`}
-                                    className="w-12 h-12 rounded-lg border border-gray-300 object-cover"
-                                    onError={(e) => {
-                                      e.currentTarget.src = 'https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop';
-                                    }}
-                                  />
+                                  {method.qr_code_url ? (
+                                    <img
+                                      src={method.qr_code_url}
+                                      alt={`${method.name} QR Code`}
+                                      className="w-12 h-12 rounded-lg border border-gray-300 object-cover"
+                                    />
+                                  ) : (
+                                    <div className="w-12 h-12 rounded-lg border border-gray-300 bg-gray-100 flex items-center justify-center">
+                                      <CreditCard className="h-6 w-6 text-gray-400" />
+                                    </div>
+                                  )}
                                 </div>
                                 <div>
                                   <h3 className="font-medium text-black text-sm">{method.name}</h3>
@@ -636,14 +656,17 @@ const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({ onBack }) =
                   >
                     <div className="flex items-center space-x-4">
                       <div className="flex-shrink-0">
-                        <img
-                          src={method.qr_code_url}
-                          alt={`${method.name} QR Code`}
-                          className="w-12 h-12 rounded-lg border border-gray-300 object-cover"
-                          onError={(e) => {
-                            e.currentTarget.src = 'https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop';
-                          }}
-                        />
+                        {method.qr_code_url ? (
+                          <img
+                            src={method.qr_code_url}
+                            alt={`${method.name} QR Code`}
+                            className="w-12 h-12 rounded-lg border border-gray-300 object-cover"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-lg border border-gray-300 bg-gray-100 flex items-center justify-center">
+                            <CreditCard className="h-6 w-6 text-gray-400" />
+                          </div>
+                        )}
                       </div>
                       <div>
                         <h3 className="font-medium text-black text-sm">{method.name}</h3>

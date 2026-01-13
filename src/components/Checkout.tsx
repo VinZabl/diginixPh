@@ -274,7 +274,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack }) =>
     }
 
     const orderDetails = `
-🛒 hatredtopup ORDER
+🛒 Kitty Galore Game Credits ORDER
 
 ${customFieldsSection}
 
@@ -294,7 +294,7 @@ ${cartItems.map(item => {
 
 📸 Payment Receipt: ${receiptImageUrl || ''}
 
-Please confirm this order to proceed. Thank you for choosing hatredtopup! 🎮
+Please confirm this order to proceed. Thank you for choosing Kitty Galore Game Credits! 🎮
     `.trim();
 
     return orderDetails;
@@ -409,7 +409,7 @@ Please confirm this order to proceed. Thank you for choosing hatredtopup! 🎮
 
     const orderDetails = generateOrderMessage();
     const encodedMessage = encodeURIComponent(orderDetails);
-    const messengerUrl = `https://m.me/Hatred03?text=${encodedMessage}`;
+    const messengerUrl = `https://m.me/KGGameCredits?text=${encodedMessage}`;
     
     window.open(messengerUrl, '_blank');
     
@@ -573,7 +573,7 @@ Please confirm this order to proceed. Thank you for choosing hatredtopup! 🎮
                     ? 'text-white hover:opacity-90 hover:scale-[1.02]'
                     : 'glass text-cafe-textMuted cursor-not-allowed'
                 }`}
-                style={isDetailsValid ? { backgroundColor: '#8B0000' } : {}}
+                style={isDetailsValid ? { backgroundColor: '#E74694' } : {}}
               >
                 Proceed to Payment
               </button>
@@ -607,7 +607,7 @@ Please confirm this order to proceed. Thank you for choosing hatredtopup! 🎮
             <div className="border-t border-cafe-primary/30 pt-4">
               <div className="flex items-center justify-between text-2xl font-semibold text-cafe-text">
                 <span>Total:</span>
-                <span className="text-white">₱{totalPrice}</span>
+                <span className="text-cafe-text">₱{totalPrice}</span>
               </div>
             </div>
             
@@ -649,7 +649,7 @@ Please confirm this order to proceed. Thank you for choosing hatredtopup! 🎮
                     ? 'border-transparent text-white'
                     : 'glass border-cafe-primary/30 text-cafe-text hover:border-cafe-primary hover:glass-strong'
                 }`}
-                style={paymentMethod === method.id ? { backgroundColor: '#8B0000' } : {}}
+                style={paymentMethod === method.id ? { backgroundColor: '#E74694' } : {}}
               >
                 {/* Icon on Top */}
                 <div className="relative w-12 h-12 md:w-14 md:h-14 flex-shrink-0 rounded-lg overflow-hidden bg-gradient-to-br from-cafe-darkCard to-cafe-darkBg flex items-center justify-center">
@@ -700,27 +700,32 @@ Please confirm this order to proceed. Thank you for choosing hatredtopup! 🎮
                 
                 {/* Download QR Button and QR Image */}
                 <div className="flex flex-col items-center gap-3">
-                  {!isMessengerBrowser && (
-                    <button
-                      onClick={() => handleDownloadQRCode(selectedPaymentMethod.qr_code_url, selectedPaymentMethod.name)}
-                      className="px-3 py-1.5 glass-strong rounded-lg hover:bg-cafe-primary/20 transition-colors duration-200 text-sm font-medium text-cafe-text flex items-center gap-2"
-                      title="Download QR code"
-                    >
-                      <Download className="h-4 w-4" />
-                      <span>Download QR</span>
-                    </button>
+                  {selectedPaymentMethod.qr_code_url ? (
+                    <>
+                      {!isMessengerBrowser && (
+                        <button
+                          onClick={() => handleDownloadQRCode(selectedPaymentMethod.qr_code_url, selectedPaymentMethod.name)}
+                          className="px-3 py-1.5 glass-strong rounded-lg hover:bg-cafe-primary/20 transition-colors duration-200 text-sm font-medium text-cafe-text flex items-center gap-2"
+                          title="Download QR code"
+                        >
+                          <Download className="h-4 w-4" />
+                          <span>Download QR</span>
+                        </button>
+                      )}
+                      {isMessengerBrowser && (
+                        <p className="text-xs text-cafe-textMuted text-center">Long-press the QR code to save</p>
+                      )}
+                      <img 
+                        src={selectedPaymentMethod.qr_code_url} 
+                        alt={`${selectedPaymentMethod.name} QR Code`}
+                        className="w-32 h-32 rounded-lg border-2 border-cafe-primary/30 shadow-sm"
+                      />
+                    </>
+                  ) : (
+                    <div className="w-32 h-32 rounded-lg border-2 border-cafe-primary/30 shadow-sm bg-gray-100 flex items-center justify-center p-4">
+                      <p className="text-sm text-cafe-textMuted text-center">QR code not available</p>
+                    </div>
                   )}
-                  {isMessengerBrowser && (
-                    <p className="text-xs text-cafe-textMuted text-center">Long-press the QR code to save</p>
-                  )}
-                  <img 
-                    src={selectedPaymentMethod.qr_code_url} 
-                    alt={`${selectedPaymentMethod.name} QR Code`}
-                    className="w-32 h-32 rounded-lg border-2 border-cafe-primary/30 shadow-sm"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://images.pexels.com/photos/8867482/pexels-photo-8867482.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop';
-                    }}
-                  />
                 </div>
                 
                 {/* Account Number with Copy Button */}
@@ -744,7 +749,7 @@ Please confirm this order to proceed. Thank you for choosing hatredtopup! 🎮
                 
                 {/* Amount and Instructions */}
                 <div className="pt-2 border-t border-cafe-primary/20">
-                  <p className="text-xl font-semibold text-white mb-2">Amount: ₱{totalPrice}</p>
+                  <p className="text-xl font-semibold text-cafe-text mb-2">Amount: ₱{totalPrice}</p>
                   <p className="text-sm text-cafe-textMuted">Press the copy button to copy the number or download the QR code, make a payment, then upload the receipt below 👇</p>
                 </div>
               </div>
@@ -824,7 +829,7 @@ Please confirm this order to proceed. Thank you for choosing hatredtopup! 🎮
           <div className="border-t border-cafe-primary/30 pt-4 mb-6">
             <div className="flex items-center justify-between text-2xl font-semibold text-cafe-text">
               <span>Total:</span>
-              <span className="text-white">₱{totalPrice}</span>
+              <span className="text-cafe-text">₱{totalPrice}</span>
             </div>
           </div>
 
@@ -934,7 +939,7 @@ Please confirm this order to proceed. Thank you for choosing hatredtopup! 🎮
                   ? 'text-white hover:opacity-90 hover:scale-[1.02]'
                   : 'glass text-cafe-textMuted cursor-not-allowed'
               }`}
-              style={paymentMethod && receiptImageUrl && !uploadingReceipt && hasCopiedMessage ? { backgroundColor: '#8B0000' } : {}}
+              style={paymentMethod && receiptImageUrl && !uploadingReceipt && hasCopiedMessage ? { backgroundColor: '#E74694' } : {}}
             >
               {uploadingReceipt ? 'Uploading Receipt...' : 'Place Order via Messenger'}
             </button>

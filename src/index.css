@@ -2,28 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
-/* In-Game Credits Theme Styles */
+/* Kitty Galore Theme Styles */
 /* Glassmorphism utilities */
 .glass {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(231, 70, 148, 0.2);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(231, 70, 148, 0.3);
 }
 
 .glass-card {
-  background: rgba(20, 20, 20, 0.6);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(139, 0, 0, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border: 1px solid rgba(231, 70, 148, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(231, 70, 148, 0.15);
 }
 
 .glass-hover {
@@ -31,9 +31,9 @@
 }
 
 .glass-hover:hover {
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(139, 0, 0, 0.5);
-  box-shadow: 0 8px 32px 0 rgba(139, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(231, 70, 148, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(231, 70, 148, 0.25);
 }
 
 .package-card-hover {
@@ -41,9 +41,9 @@
 }
 
 .package-card-hover:hover {
-  background: #8B0000 !important;
-  border: 2px solid #8B0000 !important;
-  box-shadow: 0 4px 12px 0 rgba(139, 0, 0, 0.4) !important;
+  background: #E74694 !important;
+  border: 2px solid #E74694 !important;
+  box-shadow: 0 4px 12px 0 rgba(231, 70, 148, 0.4) !important;
   transform: scale(1.02) !important;
 }
 
@@ -54,29 +54,29 @@
   color: white !important;
 }
 
-/* Glow effects for Hatred theme */
+/* Glow effects for Kitty Galore theme */
 .glow-blue {
-  box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+  box-shadow: 0 0 20px rgba(231, 70, 148, 0.5);
 }
 
 .glow-blue-strong {
-  box-shadow: 0 0 30px rgba(139, 0, 0, 0.8);
+  box-shadow: 0 0 30px rgba(231, 70, 148, 0.8);
 }
 
 /* Text glow */
 .text-glow {
-  text-shadow: 0 0 10px rgba(139, 0, 0, 0.8);
+  text-shadow: 0 0 10px rgba(231, 70, 148, 0.8);
 }
 
 /* Legacy cafe color helpers (for compatibility) */
 .bg-cafe-cream { background-color: #F5F5F5; }
 .bg-cafe-beige { background-color: #E5E5E5; }
-.bg-cafe-light { background-color: rgba(255, 255, 255, 0.1); }
-.text-cafe-accent { color: #8B0000; }
-.text-cafe-dark { color: #F5F5F5; }
-.border-cafe-accent { border-color: #8B0000; }
-.border-cafe-latte { border-color: rgba(139, 0, 0, 0.3); }
-.ring-cafe-accent { --tw-ring-color: #8B0000; }
+.bg-cafe-light { background-color: rgba(255, 255, 255, 0.6); }
+.text-cafe-accent { color: #E74694; }
+.text-cafe-dark { color: #2D1B2E; }
+.border-cafe-accent { border-color: #E74694; }
+.border-cafe-latte { border-color: rgba(231, 70, 148, 0.3); }
+.ring-cafe-accent { --tw-ring-color: #E74694; }
 
 /* Hide scrollbar for mobile nav */
 .scrollbar-hide {
@@ -155,4 +155,10 @@ img {
 
 .animation-delay-4000 {
   animation-delay: 4s;
+}
+
+/* Search input placeholder color */
+input[type="text"]::placeholder {
+  color: #E74694;
+  opacity: 0.7;
 }

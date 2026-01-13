@@ -38,7 +38,7 @@ const Cart: React.FC<CartProps> = ({
           <button
             onClick={onContinueShopping}
             className="text-white px-6 py-3 rounded-full hover:opacity-90 transition-all duration-200"
-            style={{ backgroundColor: '#8B0000' }}
+            style={{ backgroundColor: '#E74694' }}
           >
             Browse Games
           </button>
@@ -130,13 +130,13 @@ const Cart: React.FC<CartProps> = ({
       <div className="glass-card rounded-xl p-6 flex-shrink-0" style={{ paddingBottom: 'max(1.5rem, env(safe-area-inset-bottom))' }}>
         <div className="flex items-center justify-between text-2xl font-semibold text-cafe-text mb-6">
           <span>Total:</span>
-          <span className="text-white">₱{(getTotalPrice() || 0).toFixed(2)}</span>
+          <span className="text-cafe-text">₱{(getTotalPrice() || 0).toFixed(2)}</span>
         </div>
         
         <div className="flex flex-col sm:flex-row gap-4">
           <button
             onClick={onContinueShopping}
-            className="flex-1 text-white py-4 rounded-xl hover:opacity-90 transition-all duration-200 transform hover:scale-[1.02] font-medium text-lg border-2 border-white/30"
+            className="flex-1 text-cafe-text py-4 rounded-xl hover:opacity-90 transition-all duration-200 transform hover:scale-[1.02] font-medium text-lg border-2 border-cafe-primary/30"
             style={{ backgroundColor: 'transparent' }}
           >
             Add More
@@ -144,7 +144,7 @@ const Cart: React.FC<CartProps> = ({
           <button
             onClick={onCheckout}
             className="flex-1 text-white py-4 rounded-xl hover:opacity-90 transition-all duration-200 transform hover:scale-[1.02] font-medium text-lg"
-            style={{ backgroundColor: '#8B0000' }}
+            style={{ backgroundColor: '#E74694' }}
           >
             Continue to Checkout
           </button>

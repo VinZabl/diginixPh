@@ -76,7 +76,7 @@ function MainApp() {
   }, [menuItems, selectedCategory, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-cafe-darkBg">
+    <div className="min-h-screen" style={{ backgroundColor: '#FFB6C1' }}>
       <Header 
         cartItemsCount={cart.getTotalItems()}
         onCartClick={() => handleViewChange('cart')}
