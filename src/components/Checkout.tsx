@@ -437,15 +437,14 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
   if (step === 'details') {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex items-center mb-8">
+        <div className="flex items-center justify-center mb-8 relative">
           <button
             onClick={onBack}
-            className="flex items-center space-x-2 text-cafe-textMuted hover:text-cafe-primary transition-colors duration-200"
+            className="flex items-center text-cafe-textMuted hover:text-cafe-primary transition-colors duration-200 absolute left-0"
           >
             <ArrowLeft className="h-5 w-5" />
-            <span>Back to Cart</span>
           </button>
-          <h1 className="text-3xl font-semibold text-cafe-text ml-8">Order Details</h1>
+          <h1 className="text-3xl font-semibold text-cafe-text">Order Details</h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -456,9 +455,9 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
             <form className="space-y-6">
               {/* Show count of items with custom fields */}
               {hasAnyCustomFields && itemsWithCustomFields.length > 0 && (
-                <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-800">
-                    <span className="font-semibold">{itemsWithCustomFields.length}</span> game{itemsWithCustomFields.length > 1 ? 's' : ''} require{itemsWithCustomFields.length === 1 ? 's' : ''} additional information
+                <div className="mb-4 p-3 glass-strong border border-cafe-primary/30 rounded-lg">
+                  <p className="text-sm text-cafe-text">
+                    <span className="font-semibold text-cafe-primary">{itemsWithCustomFields.length}</span> game{itemsWithCustomFields.length > 1 ? 's' : ''} require{itemsWithCustomFields.length === 1 ? 's' : ''} additional information
                   </p>
                 </div>
               )}
@@ -519,9 +518,30 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
               {hasAnyCustomFields ? (
                 itemsWithCustomFields.map((item) => (
                   <div key={item.id} className="space-y-4 pb-6 border-b border-cafe-primary/20 last:border-b-0 last:pb-0">
-                    <div className="mb-4">
-                      <h3 className="text-lg font-semibold text-cafe-text">{item.name}</h3>
-                      <p className="text-sm text-cafe-textMuted">Please provide the following information for this game</p>
+                    <div className="mb-4 flex items-center gap-4">
+                      {/* Game Icon */}
+                      <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gradient-to-br from-cafe-darkCard to-cafe-darkBg">
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                            }}
+                          />
+                        ) : null}
+                        <div className={`w-full h-full flex items-center justify-center ${item.image ? 'hidden' : ''}`}>
+                          <div className="text-2xl opacity-20 text-gray-400">🎮</div>
+                        </div>
+                      </div>
+                      
+                      {/* Game Title and Description */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-semibold text-cafe-text">{item.name}</h3>
+                        <p className="text-sm text-cafe-textMuted">Please provide the following information for this game</p>
+                      </div>
                     </div>
                     {item.customFields?.map((field) => {
                       const originalId = getOriginalMenuItemId(item.id);
@@ -587,9 +607,28 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
             
             <div className="space-y-4 mb-6">
               {cartItems.map((item) => (
-                <div key={item.id} className="flex items-center justify-between py-2 border-b border-cafe-primary/30">
-                  <div>
-                    <h4 className="font-medium text-cafe-text">{item.name}</h4>
+                <div key={item.id} className="flex items-start gap-4 py-3 border-b border-cafe-primary/30">
+                  {/* Game Icon */}
+                  <div className="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden bg-gradient-to-br from-cafe-darkCard to-cafe-darkBg">
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                    ) : null}
+                    <div className={`w-full h-full flex items-center justify-center ${item.image ? 'hidden' : ''}`}>
+                      <div className="text-2xl opacity-20 text-gray-400">🎮</div>
+                    </div>
+                  </div>
+                  
+                  {/* Game Details */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-medium text-cafe-text mb-1">{item.name}</h4>
                     {item.selectedVariation && (
                       <p className="text-sm text-cafe-textMuted">Package: {item.selectedVariation.name}</p>
                     )}
@@ -598,9 +637,13 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
                         Add-ons: {item.selectedAddOns.map(addOn => addOn.name).join(', ')}
                       </p>
                     )}
-                    <p className="text-sm text-cafe-textMuted">₱{item.totalPrice} x {item.quantity}</p>
+                    <p className="text-sm text-cafe-textMuted mt-1">₱{item.totalPrice} × {item.quantity}</p>
                   </div>
-                  <span className="font-semibold text-cafe-text">₱{item.totalPrice * item.quantity}</span>
+                  
+                  {/* Price */}
+                  <div className="flex-shrink-0">
+                    <span className="font-semibold text-cafe-text">₱{item.totalPrice * item.quantity}</span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -621,15 +664,14 @@ Please confirm this order to proceed. Thank you for choosing AmberKin! 🎮
   // Payment Step
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="flex items-center mb-8">
+      <div className="flex items-center justify-center mb-8 relative">
         <button
           onClick={() => setStep('details')}
-          className="flex items-center space-x-2 text-cafe-textMuted hover:text-cafe-primary transition-colors duration-200"
+          className="flex items-center text-cafe-textMuted hover:text-cafe-primary transition-colors duration-200 absolute left-0"
         >
           <ArrowLeft className="h-5 w-5" />
-          <span>Back to Details</span>
         </button>
-        <h1 className="text-3xl font-semibold text-cafe-text ml-8">Payment</h1>
+        <h1 className="text-3xl font-semibold text-cafe-text">Payment</h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

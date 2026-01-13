@@ -49,18 +49,18 @@ const Cart: React.FC<CartProps> = ({
 
   return (
     <div className="flex flex-col max-w-4xl mx-auto px-4 py-8" style={{ maxHeight: 'calc(100vh - 120px)', height: 'calc(100vh - 120px)', minHeight: 0 }}>
-      <div className="flex items-center justify-between mb-6 flex-shrink-0">
+      <div className="flex items-center justify-center mb-6 flex-shrink-0 relative">
         <button
           onClick={onContinueShopping}
           aria-label="Back"
-          className="flex items-center text-cafe-textMuted hover:text-cafe-primary transition-colors duration-200"
+          className="flex items-center text-cafe-textMuted hover:text-cafe-primary transition-colors duration-200 absolute left-0"
         >
           <ArrowLeft className="h-5 w-5" />
         </button>
-        <h1 className="text-3xl font-semibold text-cafe-text whitespace-nowrap">Your Cart</h1>
+        <h1 className="text-3xl font-semibold text-cafe-text whitespace-nowrap">Cart</h1>
         <button
           onClick={clearCart}
-          className="text-cafe-primary hover:text-cafe-secondary transition-colors duration-200 whitespace-nowrap"
+          className="text-cafe-primary hover:text-cafe-secondary transition-colors duration-200 whitespace-nowrap absolute right-0"
         >
           Clear All
         </button>

@@ -149,29 +149,55 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setShowCustomization(false)}>
           <div className="flex flex-col rounded-2xl max-w-2xl w-full max-h-[90vh] shadow-2xl overflow-hidden" style={{ background: '#0066CC' }} onClick={(e) => e.stopPropagation()}>
             <div 
-              className="flex-shrink-0 p-6 flex items-center justify-between rounded-t-2xl" 
+              className="flex-shrink-0 p-6 flex items-center justify-between rounded-t-2xl relative overflow-hidden" 
               style={{ 
-                background: '#3399FF', 
+                backgroundImage: item.image ? `url(${item.image})` : 'none',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
                 zIndex: 20,
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-                borderBottom: '2px solid rgba(255, 255, 255, 0.2)'
+                minHeight: '120px'
               }}
             >
-              <div>
-                <h3 className="text-xl font-bold text-white">{item.name}</h3>
-                {item.subtitle && (
-                  <p className="text-sm text-white/90 mt-1">{item.subtitle}</p>
-                )}
-                {item.description && (
-                  <p className="text-sm text-white/90 mt-2">{item.description}</p>
-                )}
+              {/* Dark overlay for text readability - covers entire header including edges */}
+              <div 
+                className="absolute inset-0 bg-black/60 rounded-t-2xl"
+                style={{
+                  zIndex: 1,
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0
+                }}
+              />
+              
+              {/* Border on top of overlay */}
+              <div 
+                className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/20 rounded-b-2xl"
+                style={{
+                  zIndex: 2
+                }}
+              />
+              
+              {/* Content with relative positioning to be above overlay */}
+              <div className="relative z-10 flex items-center justify-between w-full">
+                <div>
+                  <h3 className="text-xl font-bold text-white drop-shadow-lg">{item.name}</h3>
+                  {item.subtitle && (
+                    <p className="text-sm text-white/95 mt-1 drop-shadow-md">{item.subtitle}</p>
+                  )}
+                  {item.description && (
+                    <p className="text-sm text-white/90 mt-2 drop-shadow-md line-clamp-2">{item.description}</p>
+                  )}
+                </div>
+                <button
+                  onClick={() => setShowCustomization(false)}
+                  className="p-2 hover:bg-white/20 rounded-full transition-colors duration-200 relative z-10"
+                >
+                  <X className="h-5 w-5 text-white drop-shadow-lg" />
+                </button>
               </div>
-              <button
-                onClick={() => setShowCustomization(false)}
-                className="p-2 hover:bg-white/20 rounded-full transition-colors duration-200"
-              >
-                <X className="h-5 w-5 text-white" />
-              </button>
             </div>
 
             <div 
