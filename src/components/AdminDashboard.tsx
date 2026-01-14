@@ -4,6 +4,7 @@ import { MenuItem, Variation, CustomField } from '../types';
 import { useMenu } from '../hooks/useMenu';
 import { useCategories } from '../hooks/useCategories';
 import { useOrders } from '../hooks/useOrders';
+import { useSiteSettings } from '../hooks/useSiteSettings';
 import ImageUpload from './ImageUpload';
 import CategoryManager from './CategoryManager';
 import PaymentMethodManager from './PaymentMethodManager';
@@ -21,10 +22,38 @@ const AdminDashboard: React.FC = () => {
   const { menuItems, loading, addMenuItem, updateMenuItem, deleteMenuItem } = useMenu();
   const { categories } = useCategories();
   const { orders } = useOrders();
+  const { siteSettings } = useSiteSettings();
   const [currentView, setCurrentView] = useState<'dashboard' | 'items' | 'add' | 'edit' | 'categories' | 'payments' | 'settings' | 'orders'>('dashboard');
   
   // Count new orders (pending or processing)
   const newOrdersCount = orders.filter(order => order.status === 'pending' || order.status === 'processing').length;
+  
+  // Track previous order count to detect new orders
+  const [previousOrderCount, setPreviousOrderCount] = useState<number | null>(null);
+  
+  // Play notification sound when a new order arrives
+  useEffect(() => {
+    // Only play sound if we're on the admin dashboard and a new order has arrived
+    if (currentView === 'orders' || currentView === 'dashboard') {
+      // Initialize previousOrderCount on first load
+      if (previousOrderCount === null) {
+        setPreviousOrderCount(newOrdersCount);
+        return;
+      }
+      
+      // Check if a new order has arrived (count increased)
+      if (newOrdersCount > previousOrderCount) {
+        // New order detected - play sound
+        const audio = new Audio('/notifSound.mp3');
+        const volume = siteSettings?.notification_volume ?? 0.5;
+        audio.volume = Math.max(0, Math.min(1, volume)); // Clamp between 0 and 1
+        audio.play().catch(err => {
+          console.error('Error playing notification sound:', err);
+        });
+      }
+      setPreviousOrderCount(newOrdersCount);
+    }
+  }, [newOrdersCount, previousOrderCount, currentView, siteSettings?.notification_volume]);
 
   // Fetch admin password from database on mount
   useEffect(() => {
