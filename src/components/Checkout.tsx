@@ -622,15 +622,56 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
     return lines.join('\n');
   };
 
+  // Helper function to copy text to clipboard (works on iOS)
+  const copyToClipboard = async (text: string): Promise<boolean> => {
+    // Try modern Clipboard API first
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (error) {
+        console.warn('Clipboard API failed, trying fallback:', error);
+      }
+    }
+
+    // Fallback for iOS Safari and older browsers
+    try {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-999999px';
+      textArea.style.top = '-999999px';
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      
+      const successful = document.execCommand('copy');
+      document.body.removeChild(textArea);
+      
+      if (!successful) {
+        throw new Error('execCommand copy failed');
+      }
+      
+      return true;
+    } catch (error) {
+      console.error('Fallback copy method failed:', error);
+      return false;
+    }
+  };
+
   const handleCopyMessage = async () => {
     try {
       // Force generate a new invoice number when Copy is clicked
       // This locks in the invoice number for this order
       const message = await generateOrderMessage(true);
-      await navigator.clipboard.writeText(message);
-      setCopied(true);
-      setHasCopiedMessage(true); // Mark that copy button has been clicked
-      setTimeout(() => setCopied(false), 2000);
+      const success = await copyToClipboard(message);
+      if (success) {
+        setCopied(true);
+        setHasCopiedMessage(true); // Mark that copy button has been clicked
+        setTimeout(() => setCopied(false), 2000);
+      } else {
+        console.error('Failed to copy message');
+      }
     } catch (error) {
       console.error('Failed to copy message:', error);
     }
@@ -638,9 +679,13 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
 
   const handleCopyAccountNumber = async (accountNumber: string) => {
     try {
-      await navigator.clipboard.writeText(accountNumber);
-      setCopiedAccountNumber(true);
-      setTimeout(() => setCopiedAccountNumber(false), 2000);
+      const success = await copyToClipboard(accountNumber);
+      if (success) {
+        setCopiedAccountNumber(true);
+        setTimeout(() => setCopiedAccountNumber(false), 2000);
+      } else {
+        console.error('Failed to copy account number');
+      }
     } catch (error) {
       console.error('Failed to copy account number:', error);
     }
@@ -648,9 +693,13 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
 
   const handleCopyAccountName = async (accountName: string) => {
     try {
-      await navigator.clipboard.writeText(accountName);
-      setCopiedAccountName(true);
-      setTimeout(() => setCopiedAccountName(false), 2000);
+      const success = await copyToClipboard(accountName);
+      if (success) {
+        setCopiedAccountName(true);
+        setTimeout(() => setCopiedAccountName(false), 2000);
+      } else {
+        console.error('Failed to copy account name');
+      }
     } catch (error) {
       console.error('Failed to copy account name:', error);
     }
