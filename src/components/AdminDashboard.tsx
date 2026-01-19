@@ -18,7 +18,7 @@ const AdminDashboard: React.FC = () => {
   });
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const [adminPassword, setAdminPassword] = useState<string>('AmberKin@Admin!2025'); // Default fallback
+  const [adminPassword, setAdminPassword] = useState<string>('Diginix@Admin!2025'); // Default fallback
   const { menuItems, loading, addMenuItem, updateMenuItem, deleteMenuItem } = useMenu();
   const { categories } = useCategories();
   const { orders } = useOrders();

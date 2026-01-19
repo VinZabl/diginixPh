@@ -101,13 +101,13 @@ const OrderManager: React.FC = () => {
         );
       case 'approved':
         return (
-          <span className="px-3 py-1 rounded-full text-xs font-medium border" style={{ backgroundColor: 'rgba(75, 31, 66, 0.1)', color: '#4B1F42', borderColor: 'rgba(75, 31, 66, 0.3)' }}>
+          <span className="px-3 py-1 rounded-full text-xs font-medium border" style={{ backgroundColor: 'rgba(0, 206, 209, 0.1)', color: '#00CED1', borderColor: 'rgba(0, 206, 209, 0.3)' }}>
             Approved
           </span>
         );
       case 'rejected':
         return (
-          <span className="px-3 py-1 rounded-full text-xs font-medium border" style={{ backgroundColor: 'rgba(75, 31, 66, 0.1)', color: '#4B1F42', borderColor: 'rgba(75, 31, 66, 0.3)' }}>
+          <span className="px-3 py-1 rounded-full text-xs font-medium border" style={{ backgroundColor: 'rgba(224, 48, 144, 0.1)', color: '#E03090', borderColor: 'rgba(224, 48, 144, 0.3)' }}>
             Rejected
           </span>
         );
@@ -343,7 +343,7 @@ const OrderManager: React.FC = () => {
                                   title="Copy"
                                 >
                                   {copiedField === fieldKey ? (
-                                    <CheckCircle className="h-3.5 w-3.5 md:h-4 md:w-4" style={{ color: '#4B1F42' }} />
+                                    <CheckCircle className="h-3.5 w-3.5 md:h-4 md:w-4" style={{ color: '#00CED1' }} />
                                   ) : (
                                     <Copy className="h-3.5 w-3.5 md:h-4 md:w-4 text-gray-500" />
                                   )}

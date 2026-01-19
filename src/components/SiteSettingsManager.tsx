@@ -178,7 +178,7 @@ const SiteSettingsManager: React.FC = () => {
         throw new Error('Failed to fetch current password');
       }
 
-      const currentPassword = currentPasswordData?.value || 'AmberKin@Admin!2025';
+      const currentPassword = currentPasswordData?.value || 'Diginix@Admin!2025';
 
       // Verify current password
       if (passwordData.currentPassword !== currentPassword) {

@@ -227,16 +227,16 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuan
     
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-        <div className="rounded-xl mb-4 flex items-stretch overflow-hidden">
+        <div className="rounded-xl mb-4 flex items-stretch overflow-hidden" style={{ border: '1px solid rgba(0, 206, 209, 0.3)' }}>
           {/* Left Section - Information Area */}
-          <div className="flex-1 p-3 sm:p-4 flex items-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
-            <p className="font-semibold text-cafe-text text-sm sm:text-base whitespace-nowrap">{bannerText}</p>
+          <div className="flex-1 p-3 sm:p-4 flex items-center glass-strong rounded-l-xl">
+            <p className="font-semibold text-cafe-primary text-sm sm:text-base whitespace-nowrap">{bannerText}</p>
           </div>
           {/* Right Section - Action Button */}
           <button
             onClick={() => setIsOrderModalOpen(true)}
-            className="px-4 sm:px-6 py-3 sm:py-4 text-white font-semibold hover:opacity-90 transition-all duration-200 flex items-center justify-center whitespace-nowrap"
-            style={{ backgroundColor: '#E74694' }}
+            className="px-4 sm:px-6 py-3 sm:py-4 text-white font-semibold hover:opacity-90 transition-all duration-200 flex items-center justify-center whitespace-nowrap rounded-r-xl"
+            style={{ backgroundColor: '#00CED1' }}
           >
             View
           </button>
