@@ -786,51 +786,29 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
       let message: string;
       
       if (isIOS) {
-        // On iOS, generate message synchronously using optimistic invoice number
-        // Then copy immediately, then update database in background
+        // On iOS, we MUST copy synchronously within the user gesture
+        // Use existing state first, then calculate optimistically, copy immediately
         const { dateString: todayStr, dayOfMonth } = getPhilippineDate();
         
-        // Optimistically increment invoice number
-        // Fetch current count from database first for accuracy (quick async call)
+        // Calculate optimistic invoice number synchronously
         let optimisticCount = 1;
-        try {
-          const { data: countData } = await supabase
-            .from('site_settings')
-            .select('value')
-            .eq('id', 'invoice_count')
-            .maybeSingle();
-          
-          const { data: dateData } = await supabase
-            .from('site_settings')
-            .select('value')
-            .eq('id', 'invoice_count_date')
-            .maybeSingle();
-          
-          const lastDate = dateData?.value || null;
-          if (lastDate === todayStr) {
-            // Same day - increment from database count
-            optimisticCount = countData?.value ? parseInt(countData.value, 10) + 1 : 1;
-          } else {
-            // New day - start at 1
-            optimisticCount = 1;
+        if (generatedInvoiceNumber && invoiceNumberDate === todayStr) {
+          // We have an existing invoice number for today - increment it
+          const match = generatedInvoiceNumber.match(/AKGXT1M\d+D(\d+)/);
+          if (match) {
+            optimisticCount = parseInt(match[1], 10) + 1;
           }
-        } catch (error) {
-          console.error('Error fetching invoice count for iOS:', error);
-          // Fallback: increment from existing state if available
-          if (generatedInvoiceNumber && invoiceNumberDate === todayStr) {
-            const match = generatedInvoiceNumber.match(/AKGXT1M\d+D(\d+)/);
-            if (match) {
-              optimisticCount = parseInt(match[1], 10) + 1;
-            }
-          }
+        } else {
+          // No existing number or different day - start at 1
+          optimisticCount = 1;
         }
         
         const optimisticInvoiceNumber = `AKGXT1M${dayOfMonth}D${optimisticCount}`;
         
-        // Generate message synchronously (without database calls)
+        // Generate message synchronously (this function is async but doesn't do DB calls)
         message = await generateOrderMessageSync(optimisticInvoiceNumber);
         
-        // Copy immediately (synchronously)
+        // Copy immediately (synchronously) - MUST happen within user gesture
         const textarea = document.createElement('textarea');
         textarea.value = message;
         textarea.style.position = 'fixed';
@@ -839,10 +817,23 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
         textarea.style.opacity = '0';
         textarea.style.pointerEvents = 'none';
         textarea.setAttribute('readonly', '');
+        textarea.setAttribute('contenteditable', 'true');
         document.body.appendChild(textarea);
+        
+        // Focus and select for iOS
+        textarea.focus();
         textarea.select();
         textarea.setSelectionRange(0, message.length);
-        const successful = document.execCommand('copy');
+        
+        // Try execCommand first (works better on iOS)
+        let successful = false;
+        try {
+          successful = document.execCommand('copy');
+        } catch (e) {
+          console.error('execCommand failed:', e);
+        }
+        
+        // Clean up
         document.body.removeChild(textarea);
         
         if (successful) {
@@ -858,7 +849,22 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
             setInvoiceNumberDate(todayStr);
           }).catch(console.error);
         } else {
-          console.error('Failed to copy message on iOS');
+          // Fallback: try clipboard API (may not work on older iOS)
+          try {
+            await navigator.clipboard.writeText(message);
+            setCopied(true);
+            setHasCopiedMessage(true);
+            setTimeout(() => setCopied(false), 2000);
+            
+            // Update database in background
+            generateInvoiceNumber(true).then((actualInvoiceNumber) => {
+              setGeneratedInvoiceNumber(actualInvoiceNumber);
+              setInvoiceNumberDate(todayStr);
+            }).catch(console.error);
+          } catch (clipboardError) {
+            console.error('Failed to copy message on iOS:', clipboardError);
+            alert('Failed to copy. Please try again or copy manually.');
+          }
         }
       } else {
         // For non-iOS, use async approach
@@ -1653,7 +1659,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
             <h2 className="text-sm font-medium text-cafe-text">Choose Payment Method</h2>
           </div>
           
-          <div className="grid grid-cols-3 gap-2 md:gap-4 mb-6">
+          <div className="grid grid-cols-6 gap-1 md:gap-2 mb-6">
             {paymentMethods.map((method) => (
               <button
                 key={method.id}
@@ -1662,19 +1668,35 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
                   setPaymentMethod(method);
                   setShowPaymentDetailsModal(true);
                 }}
-                className={`p-2 rounded-lg border-2 transition-all duration-200 flex flex-col items-center justify-center gap-0 ${
+                className={`rounded-lg border-2 transition-all duration-200 flex flex-col overflow-hidden ${
                   paymentMethod?.id === method.id
-                    ? 'border-transparent text-white'
-                    : 'glass border-cafe-primary/30 text-cafe-text hover:border-cafe-primary hover:glass-strong'
+                    ? 'border-transparent'
+                    : 'glass border-cafe-primary/30 hover:border-cafe-primary hover:glass-strong'
                 }`}
                 style={paymentMethod?.id === method.id ? { backgroundColor: '#1E7ACB' } : {}}
               >
-                {/* Icon on Top */}
-                <div className="relative w-8 h-8 md:w-14 md:h-14 flex-shrink-0 rounded-lg overflow-hidden bg-gradient-to-br from-cafe-darkCard to-cafe-darkBg flex items-center justify-center p-0">
-                  <span className="text-base md:text-2xl">💳</span>
+                {/* Icon fills the card */}
+                <div className="relative w-full aspect-square flex-shrink-0 overflow-hidden bg-gradient-to-br from-cafe-darkCard to-cafe-darkBg">
+                  {method.icon_url ? (
+                    <img
+                      src={method.icon_url}
+                      alt={method.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-2xl md:text-4xl">💳</span>
+                    </div>
+                  )}
                 </div>
-                {/* Text Below */}
-                <span className="font-medium text-xs text-center">{method.name}</span>
+                {/* Title Below */}
+                <div className="px-1 py-1 bg-black/60 flex items-center justify-center min-h-[32px]">
+                  <span className={`font-medium text-[10px] md:text-xs text-center leading-tight ${
+                    paymentMethod?.id === method.id ? 'text-white' : 'text-white'
+                  }`}>
+                    {method.name}
+                  </span>
+                </div>
               </button>
             ))}
           </div>

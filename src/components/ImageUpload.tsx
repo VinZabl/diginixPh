@@ -6,12 +6,16 @@ interface ImageUploadProps {
   currentImage?: string;
   onImageChange: (imageUrl: string | undefined) => void;
   className?: string;
+  label?: string;
+  hideLabel?: boolean;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ 
   currentImage, 
   onImageChange, 
-  className = '' 
+  className = '',
+  label = 'Menu Item Image',
+  hideLabel = false
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { uploadImage, deleteImage, uploading, uploadProgress } = useImageUpload();
@@ -52,7 +56,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 
   return (
     <div className={`space-y-3 ${className}`}>
-      <label className="block text-xs font-medium text-black mb-2">Menu Item Image</label>
+      {!hideLabel && <label className="block text-xs font-medium text-black mb-2">{label}</label>}
       
       {currentImage ? (
         <div className="relative">

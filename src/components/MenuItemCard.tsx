@@ -146,11 +146,11 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
     <>
       <div 
         onClick={handleCardClick}
-        className={`relative flex flex-row items-center transition-all duration-300 group rounded-xl p-2.5 md:p-3 gap-2 md:gap-3 ${!item.available ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
+        className={`relative flex flex-row items-center transition-all duration-300 group rounded-xl p-3 md:p-4 gap-2 md:gap-3 ${!item.available ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'}`}
         style={{
           background: '#1E7ACB',
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          minHeight: '80px'
+          minHeight: '100px'
         }}
         onMouseEnter={(e) => {
           if (item.available) {
@@ -176,7 +176,7 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({
           </div>
         )}
         {/* Square Game Icon on Left */}
-        <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gradient-to-br from-cafe-darkCard to-cafe-darkBg transition-transform duration-300 group-hover:scale-105">
+        <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gradient-to-br from-cafe-darkCard to-cafe-darkBg transition-transform duration-300 group-hover:scale-105">
           {item.image ? (
             <img
               src={item.image}

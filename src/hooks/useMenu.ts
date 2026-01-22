@@ -206,6 +206,49 @@ export const useMenu = () => {
     }
   };
 
+  const duplicateMenuItem = async (id: string) => {
+    try {
+      // Fetch the original menu item with all its data
+      const originalItem = menuItems.find(item => item.id === id);
+      if (!originalItem) {
+        throw new Error('Menu item not found');
+      }
+
+      // Create a new menu item based on the original, with "Copy" appended to the name
+      const duplicatedItem: Omit<MenuItem, 'id'> = {
+        name: `${originalItem.name} (Copy)`,
+        description: originalItem.description,
+        basePrice: originalItem.basePrice,
+        category: originalItem.category,
+        popular: false, // Don't duplicate popular status
+        available: originalItem.available ?? true,
+        image: originalItem.image,
+        sort_order: (originalItem.sort_order || 0) + 1, // Place after original
+        discountPercentage: originalItem.discountPercentage,
+        discountActive: originalItem.discountActive || false,
+        variations: originalItem.variations?.map(v => ({
+          name: v.name,
+          price: v.price,
+          member_price: v.member_price,
+          reseller_price: v.reseller_price,
+          credits_amount: v.credits_amount,
+          description: v.description,
+          sort_order: v.sort_order || 0,
+          category: v.category,
+          sort: v.sort
+        })) || [],
+        customFields: originalItem.customFields || [],
+        subtitle: originalItem.subtitle
+      };
+
+      // Use addMenuItem to create the duplicate with all variations
+      await addMenuItem(duplicatedItem);
+    } catch (err) {
+      console.error('Error duplicating menu item:', err);
+      throw err;
+    }
+  };
+
   useEffect(() => {
     fetchMenuItems();
   }, []);
@@ -217,6 +260,7 @@ export const useMenu = () => {
     addMenuItem,
     updateMenuItem,
     deleteMenuItem,
+    duplicateMenuItem,
     refetch: fetchMenuItems
   };
 };

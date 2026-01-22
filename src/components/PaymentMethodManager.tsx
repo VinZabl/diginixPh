@@ -68,6 +68,7 @@ const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({ onBack }) =
     account_number: '',
     account_name: '',
     qr_code_url: '',
+    icon_url: '',
     active: true,
     sort_order: 0,
     admin_name: ''
@@ -185,6 +186,7 @@ const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({ onBack }) =
       account_number: method.account_number,
       account_name: method.account_name,
       qr_code_url: method.qr_code_url,
+      icon_url: method.icon_url || '',
       active: method.active,
       sort_order: method.sort_order,
       admin_name: method.admin_name || ''
@@ -373,7 +375,19 @@ const PaymentMethodManager: React.FC<PaymentMethodManagerProps> = ({ onBack }) =
                 <ImageUpload
                   currentImage={formData.qr_code_url}
                   onImageChange={(imageUrl) => setFormData({ ...formData, qr_code_url: imageUrl || '' })}
+                  label="QR Code Image"
                 />
+              </div>
+
+              <div>
+                <ImageUpload
+                  currentImage={formData.icon_url}
+                  onImageChange={(imageUrl) => setFormData({ ...formData, icon_url: imageUrl || '' })}
+                  label="Payment Method Icon"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Upload an icon/logo for this payment method (displayed in checkout)
+                </p>
               </div>
 
               <div>

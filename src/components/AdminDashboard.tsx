@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Save, X, ArrowLeft, TrendingUp, Package, Users, Lock, FolderOpen, CreditCard, Settings, ArrowUpDown, ChevronDown, ChevronUp, ShoppingBag, CheckCircle, Star, Activity, FilePlus, List, FolderTree, Wallet, Cog, Trophy, DollarSign, Clock, Gamepad2 } from 'lucide-react';
+import { Plus, Edit, Trash2, Save, X, ArrowLeft, TrendingUp, Package, Users, Lock, FolderOpen, CreditCard, Settings, ArrowUpDown, ChevronDown, ChevronUp, ShoppingBag, CheckCircle, Star, Activity, FilePlus, List, FolderTree, Wallet, Cog, Trophy, DollarSign, Clock, Gamepad2, Copy } from 'lucide-react';
 import { MenuItem, Variation, CustomField } from '../types';
 import { useMenu } from '../hooks/useMenu';
 import { useCategories } from '../hooks/useCategories';
@@ -18,7 +18,7 @@ const AdminDashboard: React.FC = () => {
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [adminPassword, setAdminPassword] = useState<string>('AmberKin@Admin!2025'); // Default fallback
-  const { menuItems, loading, addMenuItem, updateMenuItem, deleteMenuItem } = useMenu();
+  const { menuItems, loading, addMenuItem, updateMenuItem, deleteMenuItem, duplicateMenuItem } = useMenu();
   const { categories } = useCategories();
   const [currentView, setCurrentView] = useState<'dashboard' | 'items' | 'add' | 'edit' | 'categories' | 'payments' | 'settings' | 'orders' | 'members'>('dashboard');
   const [pendingOrders, setPendingOrders] = useState<number>(0);
@@ -135,6 +135,17 @@ const AdminDashboard: React.FC = () => {
       } finally {
         setIsProcessing(false);
       }
+    }
+  };
+
+  const handleDuplicateItem = async (id: string) => {
+    try {
+      setIsProcessing(true);
+      await duplicateMenuItem(id);
+    } catch (error) {
+      alert('Failed to duplicate item. Please try again.');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -1502,13 +1513,23 @@ const AdminDashboard: React.FC = () => {
                                       onClick={() => handleEditItem(item)}
                                       disabled={isProcessing}
                                       className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors duration-200"
+                                      title="Edit"
                                     >
                                       <Edit className="h-4 w-4" />
+                                    </button>
+                                    <button
+                                      onClick={() => handleDuplicateItem(item.id)}
+                                      disabled={isProcessing}
+                                      className="p-2 text-blue-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors duration-200"
+                                      title="Duplicate Game Item"
+                                    >
+                                      <Copy className="h-4 w-4" />
                                     </button>
                                     <button
                                       onClick={() => handleDeleteItem(item.id)}
                                       disabled={isProcessing}
                                       className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors duration-200"
+                                      title="Delete"
                                     >
                                       <Trash2 className="h-4 w-4" />
                                     </button>
@@ -1610,13 +1631,23 @@ const AdminDashboard: React.FC = () => {
                             onClick={() => handleEditItem(item)}
                             disabled={isProcessing}
                             className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors duration-200"
+                            title="Edit"
                           >
                             <Edit className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDuplicateItem(item.id)}
+                            disabled={isProcessing}
+                            className="p-2 text-blue-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors duration-200"
+                            title="Duplicate Game Item"
+                          >
+                            <Copy className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => handleDeleteItem(item.id)}
                             disabled={isProcessing}
                             className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors duration-200"
+                            title="Delete"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -1700,13 +1731,23 @@ const AdminDashboard: React.FC = () => {
                         onClick={() => handleEditItem(item)}
                         disabled={isProcessing}
                         className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors duration-200"
+                        title="Edit"
                       >
                         <Edit className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={() => handleDuplicateItem(item.id)}
+                        disabled={isProcessing}
+                        className="p-2 text-blue-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors duration-200"
+                        title="Duplicate Game Item"
+                      >
+                        <Copy className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleDeleteItem(item.id)}
                         disabled={isProcessing}
                         className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors duration-200"
+                        title="Delete"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -1806,13 +1847,23 @@ const AdminDashboard: React.FC = () => {
                                   onClick={() => handleEditItem(item)}
                                   disabled={isProcessing}
                                   className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors duration-200"
+                                  title="Edit"
                                 >
                                   <Edit className="h-4 w-4" />
+                                </button>
+                                <button
+                                  onClick={() => handleDuplicateItem(item.id)}
+                                  disabled={isProcessing}
+                                  className="p-2 text-blue-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors duration-200"
+                                  title="Duplicate Game Item"
+                                >
+                                  <Copy className="h-4 w-4" />
                                 </button>
                                 <button
                                   onClick={() => handleDeleteItem(item.id)}
                                   disabled={isProcessing}
                                   className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors duration-200"
+                                  title="Delete"
                                 >
                                   <Trash2 className="h-4 w-4" />
                                 </button>
