@@ -182,7 +182,7 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuan
             <span className="ml-4 text-sm text-gray-500">({menuItems.length} {menuItems.length === 1 ? 'game' : 'games'})</span>
           </div>
           
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+          <div className="grid grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
             {renderMenuItems(menuItems)}
           </div>
         </section>
@@ -226,7 +226,7 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuan
             <h3 className="text-2xl md:text-5xl font-medium text-cafe-text">Popular</h3>
           </div>
           
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+          <div className="grid grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
             {renderMenuItems(menuItems)}
           </div>
         </section>
@@ -263,7 +263,7 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuan
               <h3 className="text-2xl md:text-5xl font-medium text-cafe-text">Popular</h3>
             </div>
             
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+            <div className="grid grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
               {renderMenuItems(popularItems)}
             </div>
           </section>
@@ -278,10 +278,10 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuan
           return (
             <section key={category.id} id={category.id} className="mb-8 md:mb-12">
               <div className="flex items-center mb-3 md:mb-4">
-                <h3 className="text-2xl md:text-5xl font-medium text-cafe-text font-anton italic">{category.name}</h3>
+                <h3 className="text-2xl md:text-5xl font-medium text-cafe-text font-sans">{category.name}</h3>
               </div>
               
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
+              <div className="grid grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
                 {renderMenuItems(categoryItems)}
               </div>
             </section>

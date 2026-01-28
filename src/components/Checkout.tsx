@@ -1462,7 +1462,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
           {/* Customer Details Form */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-6 h-6 rounded-full bg-cafe-primary text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+              <div className="w-6 h-6 rounded-full bg-cafe-primary text-black flex items-center justify-center text-xs font-bold flex-shrink-0">
                 1
               </div>
               <h2 className="text-sm font-medium text-cafe-text">Customer Information</h2>
@@ -1676,7 +1676,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
         {/* Payment Section */}
         <div>
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-6 h-6 rounded-full bg-cafe-primary text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+            <div className="w-6 h-6 rounded-full bg-cafe-primary text-black flex items-center justify-center text-xs font-bold flex-shrink-0">
               2
             </div>
             <h2 className="text-sm font-medium text-cafe-text">Choose Payment Method</h2>
@@ -1730,7 +1730,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
           {/* Receipt Upload Section */}
           <div className="mb-6">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-6 h-6 rounded-full bg-cafe-primary text-white flex items-center justify-center text-xs font-bold flex-shrink-0">
+              <div className="w-6 h-6 rounded-full bg-cafe-primary text-black flex items-center justify-center text-xs font-bold flex-shrink-0">
                 3
               </div>
               <label className="text-sm font-medium text-cafe-text">
@@ -1773,9 +1773,6 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
               </div>
             ) : (
               <div className="relative glass border border-cafe-primary/30 rounded-lg p-4">
-                <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-cafe-primary text-white flex items-center justify-center text-xs font-bold">
-                  1
-                </div>
                 <div className="flex items-center space-x-4">
                   <div className="flex-shrink-0">
                     <img
@@ -1833,7 +1830,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
               >
                 <div className={`absolute top-2 left-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                   !uploadingReceipt && paymentMethod && receiptImageUrl
-                    ? 'bg-cafe-primary text-white'
+                    ? 'bg-cafe-primary text-black'
                     : 'bg-cafe-textMuted/30 text-cafe-textMuted'
                 }`}>
                   4
@@ -1864,7 +1861,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
               >
                 <div className={`absolute top-2 left-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                   paymentMethod && receiptImageUrl && !uploadingReceipt && hasCopiedMessage
-                    ? 'bg-cafe-primary text-white'
+                    ? 'bg-cafe-primary text-black'
                     : 'bg-cafe-textMuted/30 text-cafe-textMuted'
                 }`}>
                   5
@@ -1891,7 +1888,7 @@ const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, onNa
               >
                 <div className={`absolute top-2 left-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
                   paymentMethod && receiptImageUrl && !uploadingReceipt && !isPlacingOrder
-                    ? 'bg-cafe-primary text-white'
+                    ? 'bg-cafe-primary text-black'
                     : 'bg-cafe-textMuted/30 text-cafe-textMuted'
                 }`}>
                   4
